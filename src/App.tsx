@@ -1,11 +1,16 @@
-import React from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
+import styled, { ThemeProvider } from "styled-components";
+import theme from "./theme";
+
+const AppStyled = styled("div")`
+  color: ${({ theme }) => theme.textColor.primary};
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">Test</header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AppStyled>Testststst</AppStyled>
+    </ThemeProvider>
   );
 }
 
