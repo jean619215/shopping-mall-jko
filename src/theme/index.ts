@@ -12,6 +12,19 @@ export interface IBaseTheme {
   borderColor: {
     primary: string;
   };
+  typography: {
+    fontFamily: string;
+    h1: IFontTheme;
+    h2: IFontTheme;
+    body1: IFontTheme;
+  };
+}
+
+export interface IFontTheme {
+  fontFamily?: string;
+  fontWeight?: number | string;
+  fontSize?: number | string;
+  lineHeight?: number | string;
 }
 
 const baseTheme: IBaseTheme = {
@@ -27,6 +40,24 @@ const baseTheme: IBaseTheme = {
   },
   borderColor: {
     primary: "#37394a",
+  },
+  typography: {
+    fontFamily: "'Helvetica', 'Roboto', 'Arial', sans-serif",
+    h1: {
+      fontWeight: 600,
+      fontSize: 24,
+      lineHeight: "36px",
+    },
+    h2: {
+      fontWeight: 700,
+      fontSize: 16,
+      lineHeight: "48px",
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize: 14,
+      lineHeight: "24px",
+    },
   },
 };
 

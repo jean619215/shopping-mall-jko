@@ -1,5 +1,7 @@
 import useQuery from "../../hooks/useQuery";
 
+const mockCommodity = {};
+
 const CommodityDetail = () => {
   let query = useQuery();
 
