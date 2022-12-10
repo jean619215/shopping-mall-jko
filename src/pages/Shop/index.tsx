@@ -6,7 +6,6 @@ import { HeaderBlock, HeaderButton } from "../../components/Header/styled";
 import Typography from "../../components/Typography";
 import { Wrapper } from "../../components/Wrapper";
 import PATH from "../../config/pathConfig";
-import { IconButton } from "../../elements/Button";
 import useCommodityList, {
   ICommodityListRes,
 } from "../../hooks/useCommodityList";

@@ -1,8 +1,6 @@
 import styled, { css } from "styled-components";
 import { OPTION_STATUS } from ".";
-import { BaseButton, IconButton } from "../../../elements/Button";
-import Header from "../../Header";
-import Navigation from "../../Navigation";
+import { IconButton } from "../../../elements/Button";
 
 export const CommodityDetailModelStyled = styled("div")<{
   show?: boolean;

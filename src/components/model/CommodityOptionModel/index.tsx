@@ -25,9 +25,7 @@ import {
   OptionModalNavigation,
 } from "./styled";
 import { formatMoneyAmount } from "../../../lib/utils/tools";
-import Header from "../../Header";
 import { Wrapper } from "../../Wrapper";
-import Navigation from "../../Navigation";
 
 export enum OPTION_STATUS {
   SELECTED = "SELECTED",
@@ -89,7 +87,7 @@ function initCommodityOption(commodityInfo: ICommodityRes): {
 
   for (let i = 0; i < commodityInfo.inventory.length; i++) {
     const specification = commodityInfo.inventory[i].specification;
-    Object.keys(specification).map((key) => {
+    Object.keys(specification).forEach((key) => {
       if (!options[key]) {
         options[key] = {};
         options[key][specification[key]] = OPTION_STATUS.ENABLE;
@@ -132,7 +130,7 @@ function reducer(state: ICommodityState, action: ICommodityAction) {
   ): IOptionStatus {
     let newStatus: IOptionStatus = { ...optionsStatus };
     let updateQueueTitle: string[] = [];
-    Object.keys(newState.optionsStatus).map((key) => {
+    Object.keys(newState.optionsStatus).forEach((key) => {
       if (!newState.seletedOptionTitle.includes(key)) {
         updateQueueTitle.push(key);
       }
@@ -192,7 +190,7 @@ function reducer(state: ICommodityState, action: ICommodityAction) {
   } else if (type === ACTION_TYPE.SELECT_OPTION && optionTitle && option) {
     // if slect enable option
     if (newState.optionsStatus[optionTitle][option] === OPTION_STATUS.ENABLE) {
-      Object.keys(newState.optionsStatus[optionTitle]).map((key) => {
+      Object.keys(newState.optionsStatus[optionTitle]).forEach((key) => {
         newState.optionsStatus[optionTitle][key] = OPTION_STATUS.DISABLE;
       });
       newState.optionsStatus[optionTitle][option] = OPTION_STATUS.SELECTED;
@@ -216,7 +214,7 @@ function reducer(state: ICommodityState, action: ICommodityAction) {
     } else if (
       newState.optionsStatus[optionTitle][option] === OPTION_STATUS.SELECTED
     ) {
-      Object.keys(newState.optionsStatus[optionTitle]).map((key) => {
+      Object.keys(newState.optionsStatus[optionTitle]).forEach((key) => {
         newState.optionsStatus[optionTitle][key] = OPTION_STATUS.ENABLE;
       });
 

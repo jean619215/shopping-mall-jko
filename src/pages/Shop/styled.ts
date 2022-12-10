@@ -15,6 +15,9 @@ export const ListSection = styled("div")`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-items: flex-start;
+  align-content: flex-start;
+  min-height: 800px;
 `;
 
 export const OptionImage = styled("img")`

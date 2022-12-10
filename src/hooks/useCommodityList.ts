@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { requestCommodityListMockData } from "./mock/CommodityListMockData";
-import useQuery from "./useQuery";
 
 export interface ICommodityListRes {
   id: string;

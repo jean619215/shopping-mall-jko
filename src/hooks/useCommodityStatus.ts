@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { UrlObject } from "url";
 import { requestCommodityMockData } from "./mock/CommodityMockData";
 import useQuery from "./useQuery";
 
