@@ -2,13 +2,17 @@ import Header from "../../components/Header";
 import Navigation from "../../components/Navigation";
 import { Wrapper } from "../../components/Wrapper";
 import { Button, HighlightButton, IconButton } from "../../elements/Button";
-import useCommodityStatus from "../../hooks/useCommodityStatus";
+import useCommodityStatus, {
+  ISpecification,
+} from "../../hooks/useCommodityStatus";
 import { ChevronLeft, ShoppingCart } from "react-feather";
 import { CommodityDetailStyled } from "./styled";
 import Typography from "../../components/Typography";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CommodityOptionModel from "../../components/model/CommodityOptionModel";
+import { useUserCartContext } from "../../lib/context/UserCartProvider";
+import ShoppingCartModel from "../../components/model/ShoppingCartModel";
 
 const mockCommodity = {};
 
@@ -17,13 +21,26 @@ const CommodityDetail = () => {
   const [commodityInfo, updateCoomodityInfo] = useCommodityStatus();
   const [showOptionModel, setShowOptionModel] = useState(false);
   const [showShoppingCart, setShowShoppingCart] = useState(false);
-
+  const { addCommidity } = useUserCartContext();
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleAddShoppingCart = (num: number) => {
-    console.log("____handleAddShoppingCart num", num);
+  const handleAddShoppingCart = (
+    amount: number,
+    price: number,
+    specification: ISpecification
+  ) => {
+    if (commodityInfo) {
+      addCommidity(
+        commodityInfo.id,
+        commodityInfo.name,
+        commodityInfo.image,
+        amount,
+        price,
+        specification
+      );
+    }
   };
 
   const handleBuyRightNow = () => {
@@ -31,7 +48,7 @@ const CommodityDetail = () => {
   };
 
   return (
-    <CommodityDetailStyled>
+    <>
       <Header>
         <IconButton onClick={handleBack}>
           <ChevronLeft />
@@ -40,9 +57,12 @@ const CommodityDetail = () => {
       </Header>
       <Wrapper>
         {commodityInfo ? (
-          <div
-            dangerouslySetInnerHTML={{ __html: commodityInfo.description }}
-          ></div>
+          <div>
+            <img alt={commodityInfo.name} src={commodityInfo.image}></img>
+            <div
+              dangerouslySetInnerHTML={{ __html: commodityInfo.description }}
+            ></div>
+          </div>
         ) : (
           "loading"
         )}
@@ -66,7 +86,11 @@ const CommodityDetail = () => {
           addToShoppingChart={handleAddShoppingCart}
         />
       )}
-    </CommodityDetailStyled>
+      <ShoppingCartModel
+        show={showShoppingCart}
+        closeModel={() => setShowShoppingCart(false)}
+      />
+    </>
   );
 };
 

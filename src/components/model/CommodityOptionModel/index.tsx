@@ -5,6 +5,7 @@ import { HighlightButton, IconButton } from "../../../elements/Button";
 import {
   ICommodityInventory,
   ICommodityRes,
+  ISpecification,
 } from "../../../hooks/useCommodityStatus";
 import Typography from "../../Typography";
 import { CommodityDetailModelStyled, OptionButton } from "./styled";
@@ -232,7 +233,11 @@ const CommodityOptionModel = ({
 }: {
   commodityInfo: ICommodityRes;
   closeModel: () => void;
-  addToShoppingChart: (num: number) => void;
+  addToShoppingChart: (
+    amount: number,
+    price: number,
+    specification: ISpecification
+  ) => void;
 }) => {
   const [optionsStatus, dispatch] = useReducer(reducer, {
     optionsStatus: initCommodityOption(commodityInfo),
@@ -243,9 +248,13 @@ const CommodityOptionModel = ({
     price: undefined,
   });
 
-  function handleConfirm(num: number | undefined) {
-    if (num && num > 0) {
-      addToShoppingChart(num);
+  function handleConfirm(
+    amount: number | undefined,
+    price: number | undefined,
+    specification: ISpecification
+  ) {
+    if (amount && price && amount > 0) {
+      addToShoppingChart(amount, price, specification);
       closeModel();
     }
   }
@@ -255,6 +264,12 @@ const CommodityOptionModel = ({
       <IconButton onClick={closeModel}>
         <X />
       </IconButton>
+      <img
+        alt={commodityInfo.name}
+        src={commodityInfo.image}
+        width={100}
+        height={100}
+      />
       <Typography variant="h2">{commodityInfo.name}</Typography>
       {optionsStatus.price && (
         <Typography variant="h2">
@@ -308,7 +323,13 @@ const CommodityOptionModel = ({
       </IconButton>
 
       <HighlightButton
-        onClick={() => handleConfirm(optionsStatus.userSeletedAmount)}
+        onClick={() =>
+          handleConfirm(
+            optionsStatus.userSeletedAmount,
+            optionsStatus.price,
+            optionsStatus.inventory[0].specification
+          )
+        }
       >
         加入購物車
       </HighlightButton>
