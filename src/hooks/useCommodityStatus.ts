@@ -4,6 +4,7 @@ import useQuery from "./useQuery";
 export interface ICommodityRes {
   id: string;
   name: string;
+  description: string;
   minPrice: number;
   maxPrice: number;
   inventory: ICommodityInventory[];
@@ -22,85 +23,96 @@ const mockCommodity: ICommodityRes = {
   name: "復古球衣系列",
   minPrice: 2999,
   maxPrice: 3999,
+  description: `
+    <div>
+        <h2>
+            商品分類
+        </h2>
+        <h3>
+            這邊可以填寫純文字內容
+        </h3>
+        <br>
+    </div>
+  `,
   inventory: [
     {
       amount: 3,
       price: 2999,
       specification: {
-        ["尺寸"]: "S",
-        ["顏色"]: "酷炫黑",
+        Size: "S",
+        Color: "酷炫黑",
       },
     },
     {
       amount: 3,
       price: 2999,
       specification: {
-        ["尺寸"]: "M",
-        ["顏色"]: "酷炫黑",
+        Size: "M",
+        Color: "酷炫黑",
       },
     },
     {
       amount: 3,
       price: 2999,
       specification: {
-        ["尺寸"]: "L",
-        ["顏色"]: "酷炫黑",
+        Size: "L",
+        Color: "酷炫黑",
       },
     },
     {
       amount: 2,
       price: 3999,
       specification: {
-        ["尺寸"]: "S",
-        ["顏色"]: "紫旋風",
+        Size: "S",
+        Color: "紫旋風",
       },
     },
     {
       amount: 5,
       price: 3999,
       specification: {
-        ["尺寸"]: "L",
-        ["顏色"]: "紫旋風",
-      },
-    },
-    {
-      amount: 5,
-      price: 3799,
-      specification: {
-        ["尺寸"]: "S",
-        ["顏色"]: "耀眼黃",
+        Size: "L",
+        Color: "紫旋風",
       },
     },
     {
       amount: 5,
       price: 3799,
       specification: {
-        ["尺寸"]: "XL",
-        ["顏色"]: "耀眼黃",
+        Size: "S",
+        Color: "耀眼黃",
+      },
+    },
+    {
+      amount: 5,
+      price: 3799,
+      specification: {
+        Size: "XL",
+        Color: "耀眼黃",
       },
     },
     {
       amount: 1,
       price: 3999,
       specification: {
-        ["尺寸"]: "M",
-        ["顏色"]: "非常珍稀世上絕無僅有",
+        Size: "M",
+        Color: "非常珍稀世上絕無僅有",
       },
     },
     {
       amount: 1,
       price: 3999,
       specification: {
-        ["尺寸"]: "XL",
-        ["顏色"]: "非常珍稀世上絕無僅有",
+        Size: "XL",
+        Color: "非常珍稀世上絕無僅有",
       },
     },
     {
       amount: 1,
       price: 3999,
       specification: {
-        ["尺寸"]: "XXL",
-        ["顏色"]: "非常珍稀世上絕無僅有",
+        Size: "XXL",
+        Color: "非常珍稀世上絕無僅有",
       },
     },
   ],
@@ -113,7 +125,9 @@ export default function useCommodityStatus(): [
   let query = useQuery();
   const [commodityStatus, setCommodity] = useState<ICommodityRes>();
 
-  useEffect(() => {}, [query]);
+  useEffect(() => {
+    updateCommodity();
+  }, []);
 
   async function updateCommodity() {
     const id: string | null = query.get("id");
@@ -139,5 +153,8 @@ export default function useCommodityStatus(): [
     }, 2000);
   }
 
-  return useMemo(() => [commodityStatus, updateCommodity], [query]);
+  return useMemo(
+    () => [commodityStatus, updateCommodity],
+    [query, commodityStatus, updateCommodity]
+  );
 }

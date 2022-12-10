@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import theme from "./theme";
+import theme from "./lib/theme";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Shop from "./pages/Shop";
 import CommodityDetail from "./pages/CommodityDetail";
