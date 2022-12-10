@@ -44,19 +44,16 @@ const baseTheme: IBaseTheme = {
   typography: {
     fontFamily: "'Helvetica', 'Roboto', 'Arial', sans-serif",
     h1: {
-      fontWeight: 600,
-      fontSize: 24,
-      lineHeight: "36px",
+      fontWeight: 500,
+      fontSize: "16px",
     },
     h2: {
-      fontWeight: 700,
-      fontSize: 16,
-      lineHeight: "48px",
+      fontWeight: 400,
+      fontSize: "14px",
     },
     body1: {
       fontWeight: 400,
-      fontSize: 14,
-      lineHeight: "24px",
+      fontSize: "12px",
     },
   },
 };

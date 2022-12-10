@@ -40,6 +40,13 @@ export default function useCommodityStatus(): [
     // const res = await fetch(getUrl(API_HOST, `/shop`), {
     //     method: 'GET',
     //   })
+    if (id) {
+      let status = localStorage.getItem(id);
+      if (status) {
+        status = JSON.parse(status);
+        setCommodity(status as any);
+      }
+    }
 
     try {
       if (id) {
@@ -48,13 +55,7 @@ export default function useCommodityStatus(): [
         localStorage.setItem(id, JSON.stringify(res));
       }
     } catch (error) {
-      if (id) {
-        let status = localStorage.getItem(id);
-        if (status) {
-          status = JSON.parse(status);
-          setCommodity(status as any);
-        }
-      }
+      console.error(error);
     }
   }
 

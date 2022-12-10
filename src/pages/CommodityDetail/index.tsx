@@ -6,15 +6,15 @@ import useCommodityStatus, {
   ISpecification,
 } from "../../hooks/useCommodityStatus";
 import { ChevronLeft, ShoppingCart } from "react-feather";
-import { CommodityDetailStyled } from "./styled";
+import { ButtonRow, CommodityContentSection, CommodityImage } from "./styled";
 import Typography from "../../components/Typography";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CommodityOptionModel from "../../components/model/CommodityOptionModel";
 import { useUserCartContext } from "../../lib/context/UserCartProvider";
 import ShoppingCartModel from "../../components/model/ShoppingCartModel";
-
-const mockCommodity = {};
+import { HeaderBlock, HeaderButton } from "../../components/Header/styled";
+import { formatMoneyAmount } from "../../lib/utils/tools";
 
 const CommodityDetail = () => {
   const navigate = useNavigate();
@@ -44,25 +44,40 @@ const CommodityDetail = () => {
   };
 
   const handleBuyRightNow = () => {
-    console.log("____Buy");
+    //TODO
   };
 
   return (
     <>
       <Header>
-        <IconButton onClick={handleBack}>
+        <HeaderButton onClick={handleBack}>
           <ChevronLeft />
-        </IconButton>
-        <Typography variant="h1">街口官方商城</Typography>
+        </HeaderButton>
+        <HeaderBlock>
+          <Typography variant="h1">街口官方商城</Typography>
+        </HeaderBlock>
       </Header>
       <Wrapper>
         {commodityInfo ? (
-          <div>
-            <img alt={commodityInfo.name} src={commodityInfo.image}></img>
-            <div
-              dangerouslySetInnerHTML={{ __html: commodityInfo.description }}
-            ></div>
-          </div>
+          <>
+            <CommodityImage
+              alt={commodityInfo.name}
+              src={commodityInfo.image}
+            />
+            <CommodityContentSection>
+              <Typography style={{ paddingBottom: "6px" }} variant="h1">
+                {commodityInfo.name}
+              </Typography>
+              <Typography variant="h1">
+                {formatMoneyAmount(commodityInfo.minPrice) +
+                  "-" +
+                  formatMoneyAmount(commodityInfo.maxPrice)}
+              </Typography>
+              <div
+                dangerouslySetInnerHTML={{ __html: commodityInfo.description }}
+              />
+            </CommodityContentSection>
+          </>
         ) : (
           "loading"
         )}
@@ -72,18 +87,21 @@ const CommodityDetail = () => {
           <ShoppingCart />
           <Typography variant="body1">購物車</Typography>
         </IconButton>
-        <Button onClick={() => setShowOptionModel(true)}>
-          <Typography variant="h1">加入購物車</Typography>
-        </Button>
-        <HighlightButton onClick={handleBuyRightNow}>
-          <Typography variant="h1">直接購買</Typography>
-        </HighlightButton>
+        <ButtonRow>
+          <Button onClick={() => setShowOptionModel(true)}>
+            <Typography variant="h1">加入購物車</Typography>
+          </Button>
+          <HighlightButton onClick={handleBuyRightNow}>
+            <Typography variant="h1">直接購買</Typography>
+          </HighlightButton>
+        </ButtonRow>
       </Navigation>
-      {showOptionModel && commodityInfo && (
+      {commodityInfo && (
         <CommodityOptionModel
           commodityInfo={commodityInfo}
           closeModel={() => setShowOptionModel(false)}
           addToShoppingChart={handleAddShoppingCart}
+          show={showOptionModel}
         />
       )}
       <ShoppingCartModel

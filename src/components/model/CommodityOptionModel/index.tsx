@@ -8,8 +8,26 @@ import {
   ISpecification,
 } from "../../../hooks/useCommodityStatus";
 import Typography from "../../Typography";
-import { CommodityDetailModelStyled, OptionButton } from "./styled";
+import {
+  AmountBarText,
+  AmountButton,
+  BackgroundMask,
+  CommodityDetailModelStyled,
+  CommodityDetailPanel,
+  OptionButton,
+  OptionImage,
+  OptionListRow,
+  OptionListSection,
+  OptionModalAmountBar,
+  OptionModalAmountRow,
+  OptionModalHeader,
+  OptionModalHeaderText,
+  OptionModalNavigation,
+} from "./styled";
 import { formatMoneyAmount } from "../../../lib/utils/tools";
+import Header from "../../Header";
+import { Wrapper } from "../../Wrapper";
+import Navigation from "../../Navigation";
 
 export enum OPTION_STATUS {
   SELECTED = "SELECTED",
@@ -230,6 +248,7 @@ const CommodityOptionModel = ({
   commodityInfo,
   closeModel,
   addToShoppingChart,
+  show,
 }: {
   commodityInfo: ICommodityRes;
   closeModel: () => void;
@@ -238,6 +257,7 @@ const CommodityOptionModel = ({
     price: number,
     specification: ISpecification
   ) => void;
+  show?: boolean;
 }) => {
   const [optionsStatus, dispatch] = useReducer(reducer, {
     optionsStatus: initCommodityOption(commodityInfo),
@@ -260,79 +280,104 @@ const CommodityOptionModel = ({
   }
 
   return (
-    <CommodityDetailModelStyled>
-      <IconButton onClick={closeModel}>
-        <X />
-      </IconButton>
-      <img
-        alt={commodityInfo.name}
-        src={commodityInfo.image}
-        width={100}
-        height={100}
-      />
-      <Typography variant="h2">{commodityInfo.name}</Typography>
-      {optionsStatus.price && (
-        <Typography variant="h2">
-          {formatMoneyAmount(optionsStatus.price)}
-        </Typography>
-      )}
-      {Object.keys(optionsStatus.optionsStatus).map((title, index) => {
-        return (
-          <div key={"title-" + index}>
-            <Typography variant="h2">{title}</Typography>
-            {Object.keys(optionsStatus.optionsStatus[title]).map(
-              (option, index) => (
-                <OptionButton
-                  key={"opiton-" + index}
-                  onClick={() =>
-                    dispatch({
-                      type: ACTION_TYPE.SELECT_OPTION,
-                      option: option,
-                      optionTitle: title,
-                    })
-                  }
-                  status={optionsStatus.optionsStatus[title][option]}
-                >
-                  <Typography variant="body1">{option}</Typography>
-                </OptionButton>
-              )
+    <CommodityDetailModelStyled show={show}>
+      <BackgroundMask />
+      <CommodityDetailPanel>
+        <OptionModalHeader>
+          <OptionImage alt={commodityInfo.name} src={commodityInfo.image} />
+          <OptionModalHeaderText>
+            <Typography variant="h1">{commodityInfo.name}</Typography>
+            {optionsStatus.price && (
+              <Typography variant="h1">
+                {formatMoneyAmount(optionsStatus.price)}
+              </Typography>
             )}
-          </div>
-        );
-      })}
+          </OptionModalHeaderText>
+          <IconButton onClick={closeModel}>
+            <X
+              style={{
+                padding: "5px",
+                opacity: "0.7",
+              }}
+            />
+          </IconButton>
+        </OptionModalHeader>
 
-      <Typography variant="h2">數量</Typography>
-      <IconButton
-        onClick={() =>
-          dispatch({
-            type: ACTION_TYPE.REDUCE_AMOUNT,
-          })
-        }
-      >
-        <Minus />
-      </IconButton>
-      {optionsStatus.userSeletedAmount}
-      <IconButton
-        onClick={() =>
-          dispatch({
-            type: ACTION_TYPE.ADD_AMOUNT,
-          })
-        }
-      >
-        <Plus />
-      </IconButton>
+        <Wrapper>
+          <OptionListSection>
+            {Object.keys(optionsStatus.optionsStatus).map((title, index) => {
+              return (
+                <div key={"title-" + index}>
+                  <Typography variant="h1">{title}</Typography>
+                  <OptionListRow>
+                    {Object.keys(optionsStatus.optionsStatus[title]).map(
+                      (option, index) => (
+                        <OptionButton
+                          key={"opiton-" + index}
+                          onClick={() =>
+                            dispatch({
+                              type: ACTION_TYPE.SELECT_OPTION,
+                              option: option,
+                              optionTitle: title,
+                            })
+                          }
+                          status={optionsStatus.optionsStatus[title][option]}
+                        >
+                          <Typography variant="h2">{option}</Typography>
+                        </OptionButton>
+                      )
+                    )}
+                  </OptionListRow>
+                </div>
+              );
+            })}
+          </OptionListSection>
+        </Wrapper>
 
-      <HighlightButton
-        onClick={() =>
-          handleConfirm(
-            optionsStatus.userSeletedAmount,
-            optionsStatus.price,
-            optionsStatus.inventory[0].specification
-          )
-        }
-      >
-        加入購物車
-      </HighlightButton>
+        <OptionModalNavigation>
+          <OptionModalAmountRow>
+            <Typography variant="h2">購買數量</Typography>
+            <OptionModalAmountBar>
+              <AmountButton
+                disable={!(optionsStatus.userSeletedAmount > 0)}
+                onClick={() =>
+                  dispatch({
+                    type: ACTION_TYPE.REDUCE_AMOUNT,
+                  })
+                }
+              >
+                <Minus style={{ width: "16px", height: "16px" }} />
+              </AmountButton>
+              <AmountBarText>{optionsStatus.userSeletedAmount}</AmountBarText>
+              <AmountButton
+                disable={
+                  !(optionsStatus.maxAmount > optionsStatus.userSeletedAmount)
+                }
+                onClick={() =>
+                  dispatch({
+                    type: ACTION_TYPE.ADD_AMOUNT,
+                  })
+                }
+              >
+                <Plus style={{ width: "16px", height: "16px" }} />
+              </AmountButton>
+            </OptionModalAmountBar>
+          </OptionModalAmountRow>
+
+          <HighlightButton
+            style={{ width: "95%" }}
+            onClick={() =>
+              handleConfirm(
+                optionsStatus.userSeletedAmount,
+                optionsStatus.price,
+                optionsStatus.inventory[0].specification
+              )
+            }
+          >
+            加入購物車
+          </HighlightButton>
+        </OptionModalNavigation>
+      </CommodityDetailPanel>
     </CommodityDetailModelStyled>
   );
 };

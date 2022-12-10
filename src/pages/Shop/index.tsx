@@ -1,13 +1,22 @@
 import { useEffect, useRef } from "react";
+import { X } from "react-feather";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
+import { HeaderBlock, HeaderButton } from "../../components/Header/styled";
 import Typography from "../../components/Typography";
 import { Wrapper } from "../../components/Wrapper";
 import PATH from "../../config/pathConfig";
+import { IconButton } from "../../elements/Button";
 import useCommodityList, {
   ICommodityListRes,
 } from "../../hooks/useCommodityList";
 import { formatMoneyAmount } from "../../lib/utils/tools";
-import { OptionBlock } from "./styled";
+import {
+  ListSection,
+  OptionBlock,
+  OptionImage,
+  OptionTextContent,
+} from "./styled";
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -23,7 +32,7 @@ const Shop = () => {
     let clientHeight = wapperRef.current!.clientHeight;
     let scrollHeight = wapperRef.current!.scrollHeight;
 
-    if (scrollTop + clientHeight > scrollHeight - 50) {
+    if (scrollTop + clientHeight > scrollHeight - 100) {
       try {
         await updateList(0, 4);
       } catch (error) {
@@ -40,20 +49,37 @@ const Shop = () => {
   }, [list]);
 
   return (
-    <Wrapper ref={wapperRef}>
-      {list &&
-        list.map((item: ICommodityListRes, index: number) => (
-          <OptionBlock key={index} onClick={() => handleClickOption(item.id)}>
-            <img alt={item.name} src={item.image} />
-            <Typography variant="h1">{item.name}</Typography>
-            <Typography variant="h1">
-              {formatMoneyAmount(item.minPrice) +
-                "-" +
-                formatMoneyAmount(item.maxPrice)}
-            </Typography>
-          </OptionBlock>
-        ))}
-    </Wrapper>
+    <>
+      <Header>
+        <HeaderButton>
+          <X />
+        </HeaderButton>
+        <HeaderBlock>
+          <Typography variant="h1">官方商城</Typography>
+        </HeaderBlock>
+      </Header>
+      <Wrapper ref={wapperRef}>
+        <ListSection>
+          {list &&
+            list.map((item: ICommodityListRes, index: number) => (
+              <OptionBlock
+                key={index}
+                onClick={() => handleClickOption(item.id)}
+              >
+                <OptionImage alt={item.name} src={item.image} />
+                <OptionTextContent>
+                  <Typography variant="h2">{item.name}</Typography>
+                  <Typography variant="h2">
+                    {formatMoneyAmount(item.minPrice) +
+                      "-" +
+                      formatMoneyAmount(item.maxPrice)}
+                  </Typography>
+                </OptionTextContent>
+              </OptionBlock>
+            ))}
+        </ListSection>
+      </Wrapper>
+    </>
   );
 };
 

@@ -24,7 +24,7 @@ function App() {
           <Routes>
             <Route path={PATH.COMMODITY_DETAIL} element={<CommodityDetail />} />
             <Route path={PATH.SHOP} element={<Shop />} />
-            <Route path={PATH.SHOP} element={<Navigate replace to="/shop" />} />
+            <Route path="*" element={<Navigate replace to="/shop" />} />
           </Routes>
         </AppStyled>
       </UserCartProvider>
